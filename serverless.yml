@@ -20,3 +20,5 @@ functions:
 
 plugins:
   - serverless-offline
+
+  # comment to make sure changes are saved
