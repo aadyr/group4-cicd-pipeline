@@ -1,0 +1,22 @@
+service: group4-cicd-pipeline
+frameworkVersion: '3'
+
+provider:
+ name: aws
+ region: ap-southeast-1
+ runtime: nodejs18.x
+ deploymentBucket:
+    name: cohort2.serverless.deploys
+
+functions:
+  api:
+     handler: index.handler
+     events:
+       - httpApi:
+           path: /
+           method: get
+     environment: 
+       ACCESS_KEY: ${ssm:group4-access-key}
+
+plugins:
+  - serverless-offline
