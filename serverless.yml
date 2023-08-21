@@ -17,6 +17,7 @@ functions:
            method: get
      environment: 
        ACCESS_KEY: ${ssm:group4-access-key}
+     
+#plugins:
+#  - serverless-offline
 
-  plugins:
-    - serverless-offline
