@@ -8,6 +8,11 @@
 
 Adding Synk <img src="https://img.shields.io/badge/Snyk-4C4A73?style=for-the-badge&logo=snyk&logoColor=white"/> to CICD pipeline
 
+Creat an account with Synk.
+
+
+https://app.snyk.io/account
+
 ```yml
 name: Example workflow using Snyk
 on: push
