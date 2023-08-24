@@ -3,7 +3,7 @@
 <img src="https://img.shields.io/badge/Snyk-4C4A73?style=for-the-badge&logo=snyk&logoColor=white"/>
 
 <p align="center">
-  <img width="250" src="">
+  <img width="250" src="https://media.giphy.com/media/Dh5q0sShxgp13DwrvG/giphy.gif">
 </p>
 
 
