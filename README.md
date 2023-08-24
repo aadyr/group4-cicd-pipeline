@@ -7,12 +7,13 @@
 </p>
 
 
-Adding Synk  to CICD pipeline
+Adding Synk to CICD pipeline for vulnerability scanning and monitoring
 
-Creat an account with Synk.
-
+Creat an account with Synk, under the account setting create a synk token for github repository secrets.
 
 https://app.snyk.io/account
+
+
 
 ```yml
 name: Example workflow using Snyk
