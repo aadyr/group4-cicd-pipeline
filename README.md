@@ -7,14 +7,21 @@
 </p>
 
 
-Adding Synk to CICD pipeline for vulnerability scanning and monitoring
+# Adding Synk to CICD pipeline for vulnerability scanning and monitoring
 
-Creat an account with Synk, under the account setting create a synk token for github repository secrets.
+1) Create a Snyk Account:
+If you don't have a Snyk account, you'll need to create one at https://snyk.io/signup.
 
-https://app.snyk.io/account
+2) Add your Project to Snyk:
+Log in to your Snyk account and add your project to the Snyk dashboard. This involves connecting your repository to Snyk.
 
+3) Get API Token:
+In your Snyk account, generate an API token. This token will be used in GitHub Actions to authenticate with your Snyk account. https://app.snyk.io/account
 
+4) Add GitHub Secret:
+In your GitHub repository, go to "Settings" > "Secrets" > "New repository secret" and add a secret named SNYK_TOKEN with the value being your Snyk API token.
 
+5) add below code to your workflow
 ```yml
 name: Example workflow using Snyk
 on: push
