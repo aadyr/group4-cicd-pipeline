@@ -1,4 +1,4 @@
-service: group4-cicd-pipeline
+service: group4-${opt:stage, self:provider.stage}
 frameworkVersion: '3'
 
 provider:
