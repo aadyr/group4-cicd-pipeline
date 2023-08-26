@@ -1,4 +1,4 @@
-service: group4-cicd-pipeline
+service: group4-${BRANCH_NAME}
 frameworkVersion: '3'
 
 provider:
