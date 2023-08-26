@@ -5,7 +5,7 @@ module.exports.handler = async (event) => {
         {
           message: "Your function executed successfully!",
           message: "Feature1 changes made by Aadharsh",
-	        access_key: process.env.ACCESS_KEY
+	        /* access_key: process.env.ACCESS_KEY */
         },
         null,
         2
