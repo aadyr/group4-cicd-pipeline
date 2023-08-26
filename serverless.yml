@@ -1,6 +1,7 @@
 service: group4-${BRANCH_NAME}
 frameworkVersion: '3'
 
+
 provider:
  name: aws
  region: ap-southeast-1
