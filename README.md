@@ -13,6 +13,8 @@
   <img width="250" src="https://media.giphy.com/media/Dh5q0sShxgp13DwrvG/giphy.gif">
 </p>
 
+<img src="https://github.com/aadyr/group4-cicd-pipeline/blob/dev/Group4-CICD-Diagram.drawio.png" />
+
 
 # Adding Synk to CICD pipeline for vulnerability scanning and monitoring
 
