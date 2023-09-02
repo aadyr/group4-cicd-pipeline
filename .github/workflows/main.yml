@@ -1,5 +1,5 @@
 name: Group 4 Capstone - CICD with Serverless
-run-name: ${{ github.actor }} is doing Capstone Project CICD with Serverless
+run-name: ${{ github.actor }} is doing CICD with Serverless
 
 on:
   workflow_dispatch:
