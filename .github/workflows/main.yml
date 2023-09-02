@@ -1,31 +1,29 @@
-name: CICD for Serverless Application
-run-name: ${{ github.actor }} is doing CICD for serverless application
-
-name: Extract Branch Name
+name: Group 4 Capstone - CICD with Serverless
+run-name: ${{ github.actor }} is doing Capstone Project CICD with Serverless
 
 on:
-  push:
-    branches:
-      - '*'
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        description: Select the environment
+      boolean:
+        type: boolean
+        description: True or False
+      choice:
+        type: choice
+        description: Make a choice
+        options:
+        - dev
+        - main
 
 jobs:
-  extract_branch_name:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Extract Branch Name
-        id: branch_name
-        run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-
-      - name: Use Branch Name
-        run: echo "The branch name is $BRANCH_NAME"
-
   pre-deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "The job is automatically triggered by a ${{ github.event_name }} event."
+      - run: echo " The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo " This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo " The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
 
   install-dependencies:
     runs-on: ubuntu-latest
@@ -33,26 +31,103 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Run installation of dependencies commands
+      - name: Run Installation of Dependencies Commands
         run: npm install
-  unit-testing:
+  
+  scan-dependencies:
     runs-on: ubuntu-latest
     needs: install-dependencies
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Run installation of dependencies commands
+      - name: Run Installation of Dependencies Commands
         run: npm install
-      - name: Run unit testing command
-        run: npm test
-
-  package-scan:
+      - name: Run npm audit to check for vulnerabilities
+        run: npm audit --audit-level=high
+  
+  unit-tests:
     runs-on: ubuntu-latest
-    needs: unit-testing
+    needs: install-dependencies
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Run installation of dependencies commands
+      - name: Run Installation of Dependencies Commands
         run: npm install
-      - name: Run audit
-        run: npm audit        
+      - name: Run Unit Tests
+        run: npm test
+
+  deploy-dev:
+    if: github.ref == 'refs/heads/dev'
+    name: deploy to dev
+    runs-on: ubuntu-latest
+    #needs: [scan-dependencies, unit-tests]
+    needs: [scan-dependencies]
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - name: serverless deploy
+      uses: serverless/github-action@v3.2
+      with:
+        args: deploy
+      env:
+        DEPLOY_ENV: 'dev'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  deploy-prod:
+    if:  github.ref == 'refs/heads/main'
+    name: deploy to prod
+    runs-on: ubuntu-latest
+    needs: [scan-dependencies]
+    #needs: [scan-dependencies, unit-tests]
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - name: serverless deploy
+      uses: serverless/github-action@v3.2
+      with:
+        args: deploy
+      env:
+        DEPLOY_ENV: 'prod'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  #deploy-staging:
+  #  if: github.ref == 'refs/heads/staging'
+  #  name: deploy to staging
+  #  runs-on: ubuntu-latest
+  #  needs: [scan-dependencies, unit-tests]
+  #  strategy:
+  #    matrix:
+  #      node-version: [18.x]
+  #  steps:
+  #  - uses: actions/checkout@v3
+  #  - name: Use Node.js ${{ matrix.node-version }}
+  #    uses: actions/setup-node@v3
+  #    with:
+  #      node-version: ${{ matrix.node-version }}
+  #  - run: npm ci
+  #  - name: serverless deploy
+  #    uses: serverless/github-action@v3.2
+  #    with:
+  #      args: deploy
+  #    env:
+  #      DEPLOY_ENV: 'staging'
+  #      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  
